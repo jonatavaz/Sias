@@ -1,20 +1,23 @@
 <!DOCTYPE html>
-<html th:replace="~{shared/layout :: layoutBase(~{::title}, ~{::section})}" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <title>Página Inicial - SIAS</title>
-</head>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{shared/layout :: layoutBase('Início - SIAS', ~{::main}, null, null)}">
 <body>
-
-<section>
-    <div class="row mt-4">
-        <div class="col-12 text-center">
-            <h1 class="text-primary">Bem-vindo ao SIAS</h1>
-            <p class="lead">Sistema Integrado de Ações Sociais</p>
-            <hr>
-            <p>Se você está vendo esta tela bonita, o seu layout base e o Bootstrap funcionaram perfeitamente!</p>
-        </div>
+<main>
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="fw-bold" >Visão Geral</h2>
     </div>
-</section>
 
+<!--    <div class="row">-->
+<!--        <div class="col-md-12">-->
+<!--            <div class="card shadow-sm border-0">-->
+<!--                <div class="card-body py-5 text-center">-->
+<!--&lt;!&ndash;                    <i class="fa-solid fa-earth-americas mb-3" style="font-size: 3rem; color: var(&#45;&#45;sias-menta);"></i>&ndash;&gt;-->
+<!--&lt;!&ndash;                    <h4 class="fw-bold text-dark">Bem-vindo ao SIAS</h4>&ndash;&gt;-->
+<!--&lt;!&ndash;                    <p class="text-muted">Selecione uma opção no menu lateral para começar.</p>&ndash;&gt;-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </div>-->
+</main>
 </body>
 </html>

@@ -1,58 +1,260 @@
 <!DOCTYPE html>
-<html th:fragment="layoutBase(titulo, conteudo)" xmlns:th="http://www.thymeleaf.org" lang="pt-BR">
+<html th:fragment="layoutBase(titulo, conteudo, hxUrlFab, iconeFab)" xmlns:th="http://www.thymeleaf.org" lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.3.1/css/all.min.css" rel="stylesheet">
-    <title th:replace="${titulo}">SIAS Base</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+    <title th:text="${titulo}">SIAS Base</title>
 
     <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <script src="https://unpkg.com/htmx.org@1.9.11"></script>
+
     <style>
-        .btn-fab {
+        :root {
+            --sias-roxo: #4C1D95;
+            --sias-roxo-dark: #2e1065;
+            --sias-roxo-hover: rgba(255, 255, 255, 0.15);
+            --sias-menta: #10B981;
+        }
+
+        .sidebar-sias {
+            border-right: 1px solid rgba(255, 255, 255, 0.05) !important;
+            transition: width 0.3s ease;
+            background-color: #212529; /* Garante cor base na sidebar */
+        }
+
+        .sidebar-sias .nav-link {
+            color: rgba(255, 255, 255, 0.8) !important;
+            border-radius: 8px;
+            padding: 12px 16px;
+            transition: all 0.2s ease;
+            font-weight: 500;
+        }
+
+        .sidebar-sias .nav-link:hover,
+        .sidebar-sias .nav-link.active {
+            background-color: var(--sias-roxo-hover);
+            color: #ffffff !important;
+            transform: translateX(4px);
+        }
+
+        .sidebar-sias .nav-link i {
+            width: 24px;
+            text-align: center;
+        }
+
+        .logo-icon {
+            color: var(--sias-menta);
+        }
+        .logo-text {
+            color: #ffffff;
+            letter-spacing: 1px;
+        }
+
+        .btn-fab-sias {
+            color: white;
+            border: none;
             width: 60px;
             height: 60px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 28px;
-            transition: transform 0.3s;
+            font-size: 26px;
+            transition: transform 0.3s, background-color 0.3s, box-shadow 0.3s;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
         }
-        .btn-fab[aria-expanded="true"] i {
-            transform: rotate(45deg);
-            transition: transform 0.3s;
+
+        .btn-fab-sias:hover {
+            color: white;
+            transform: translateY(-3px);
+            box-shadow: 0 14px 25px rgba(0, 0, 0, 0.5);
         }
-        .btn-fab[aria-expanded="false"] i {
-            transform: rotate(0deg);
-            transition: transform 0.3s;
+
+        /* =========================================
+           ESTILO DOS CAMPOS DE FORMULÁRIO (TEMAS)
+           ========================================= */
+        .form-control {
+            border: 1px solid #adb5bd;
+            background-color: #ffffff;
+            color: #212529;
+            transition: background-color 0.3s, border-color 0.3s, color 0.3s;
+        }
+
+        .bg-dark .form-control {
+            background-color: #212529;
+            border: 1px solid #495057;
+            color: #ffffff;
+        }
+
+        .bg-dark .form-control:focus {
+            background-color: #2b3035;
+            border-color: #6c757d;
+            color: #ffffff;
+            box-shadow: 0 0 0 0.25rem rgba(255, 255, 255, 0.1);
+        }
+
+        .bg-dark .form-control::placeholder {
+            color: #adb5bd;
+        }
+
+        body {
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        .sidebar-collapsed {
+            width: 80px !important;
+        }
+        .sidebar-collapsed .sidebar-text,
+        .sidebar-collapsed .logo-text,
+        .sidebar-collapsed .user-text {
+            display: none !important;
+        }
+        .sidebar-collapsed .nav-link {
+            text-align: center;
+            padding: 12px 0;
+            display: flex;
+            justify-content: center;
+        }
+        .sidebar-collapsed .nav-link i {
+            margin-right: 0 !important;
+            font-size: 1.3rem;
+        }
+        .sidebar-collapsed .user-container {
+            justify-content: center !important;
+        }
+
+        .card {
+            transition: background-color 0.3s, border-color 0.3s, color 0.3s;
+        }
+
+        .bg-dark .card {
+            background-color: #2b3035 !important;
+            border: 1px solid #373b3e !important;
+            color: #ffffff;
+        }
+
+        .bg-dark .card .text-muted {
+            color: #adb5bd !important;
         }
     </style>
 </head>
-<body class="bg-dark">
 
-<div class="dropup position-fixed bottom-0 end-0 mb-4 me-4" style="z-index: 1050;">
-    <ul class="dropdown-menu dropdown-menu-end shadow-lg mb-2 rounded-3 border-0">
-        <li>
-            <a class="dropdown-item py-2 d-flex align-items-center gap-2" href="#">
-                <i class="fa-solid fa-calendar-plus text-primary fs-5"></i> Nova Visita
+<body class="bg-dark text-white d-flex vh-100 overflow-hidden" id="corpo-pagina">
+
+<!-- Sidebar Restaurada -->
+<div class="d-flex flex-column flex-shrink-0 p-3 shadow-lg sidebar-sias" style="width: 280px;" id="sidebar">
+    <a href="/" class="d-flex justify-content-center mb-3 mb-md-0 text-decoration-none w-100 px-1 mt-1">
+        <i class="fa-solid fa-earth-americas fs-3 me-3 logo-icon"></i>
+        <span class="fs-4 fw-bold logo-text">SIAS</span>
+    </a>
+    <hr class="text-white-50 my-4">
+
+    <ul class="nav nav-pills flex-column mb-auto gap-2">
+        <li class="nav-item">
+            <a href="/home" class="nav-link" aria-current="page" title="Início">
+                <i class="fa-solid fa-house me-3"></i>
+                <span class="sidebar-text">Início</span>
             </a>
         </li>
         <li>
-            <a class="dropdown-item py-2 d-flex align-items-center gap-2" href="#">
-                <i class="fa-solid fa-user-plus text-success fs-5"></i> Nova Pessoa
+            <a href="/pessoas" class="nav-link" title="Pessoas">
+                <i class="fa-solid fa-users me-3"></i>
+                <span class="sidebar-text">Pessoas</span>
             </a>
         </li>
-        <li><hr class="dropdown-divider"></li>
         <li>
-            <a class="dropdown-item py-2 d-flex align-items-center gap-2" href="#">
-                <i class="fa-solid fa-file-excel text-danger fs-5"></i> Gerar Relatório
+            <a href="/visitas" class="nav-link" title="Visitas">
+                <i class="fa-solid fa-map-location-dot me-3"></i>
+                <span class="sidebar-text">Visitas</span>
             </a>
         </li>
     </ul>
 
-    <button class="btn btn-primary rounded-circle shadow-lg btn-fab" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-        <i class="fa-solid fa-plus"></i>
+    <hr class="text-white-50">
+
+    <div class="d-flex align-items-center justify-content-between user-container px-2 pb-2">
+        <div class="d-flex align-items-center gap-3 text-white">
+            <i class="fa-solid fa-circle-user fs-4 text-white-50"></i>
+            <span class="user-text fw-medium">Usuário Admin</span>
+        </div>
+        <button class="btn text-white-50 border-0 user-text p-0" id="btn-tema" title="Mudar Fundo">
+            <i class="fa-solid fa-circle-half-stroke fs-5 hover-white"></i>
+        </button>
+    </div>
+</div>
+
+<div class="d-flex flex-column flex-grow-1 overflow-auto">
+    <main class="container-fluid p-4" th:replace="${conteudo}">
+    </main>
+</div>
+
+<div th:if="${hxUrlFab != null}" class="position-fixed bottom-0 end-0 mb-4 me-4" style="z-index: 1050;">
+    <button class="btn rounded-circle btn-secondary btn-fab-sias"
+            title="Novo Cadastro"
+            th:attr="hx-get=${hxUrlFab}"
+            hx-target="#offcanvas-body-content"
+            hx-swap="innerHTML"
+            data-bs-toggle="offcanvas"
+            data-bs-target="#offcanvasForm">
+        <i th:class="${iconeFab != null ? iconeFab : 'fa-solid fa-plus'}"></i>
     </button>
 </div>
 
+<div class="offcanvas offcanvas-end bg-dark text-white" tabindex="-1" id="offcanvasForm" aria-labelledby="offcanvasFormLabel">
+    <div class="offcanvas-header shadow-sm border-bottom border-secondary" id="offcanvasHeader">
+        <h5 class="offcanvas-title" id="offcanvasFormLabel">Formulário</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close" id="btn-close-offcanvas"></button>
+    </div>
+
+    <div class="offcanvas-body" id="offcanvas-body-content">
+        <div class="text-center mt-5">
+            <div class="spinner-border text-secondary" role="status"></div>
+            <p class="mt-2 text-muted">Carregando...</p>
+        </div>
+    </div>
+</div>
+
 <script th:src="@{/js/bootstrap.bundle.min.js}"></script>
+
+<script>
+    document.getElementById('btn-tema').addEventListener('click', function(event) {
+        event.preventDefault();
+
+        const corpo = document.getElementById('corpo-pagina');
+        const offcanvas = document.getElementById('offcanvasForm');
+        const btnClose = document.getElementById('btn-close-offcanvas');
+        const header = document.getElementById('offcanvasHeader');
+
+        if (corpo.classList.contains('bg-dark')) {
+            corpo.classList.remove('bg-dark', 'text-white');
+            corpo.classList.add('bg-light', 'text-dark');
+
+            offcanvas.classList.remove('bg-dark', 'text-white');
+            offcanvas.classList.add('bg-light', 'text-dark');
+
+            btnClose.classList.remove('btn-close-white');
+            header.classList.remove('border-secondary');
+        } else {
+            corpo.classList.remove('bg-light', 'text-dark');
+            corpo.classList.add('bg-dark', 'text-white');
+
+            offcanvas.classList.remove('bg-light', 'text-dark');
+            offcanvas.classList.add('bg-dark', 'text-white');
+
+            btnClose.classList.add('btn-close-white');
+            header.classList.add('border-secondary');
+        }
+    });
+
+    const sidebar = document.getElementById('sidebar');
+
+    document.addEventListener('show.bs.offcanvas', function () {
+        sidebar.classList.add('sidebar-collapsed');
+    });
+
+    document.addEventListener('hidden.bs.offcanvas', function () {
+        sidebar.classList.remove('sidebar-collapsed');
+    });
+</script>
+
 </body>
 </html>
