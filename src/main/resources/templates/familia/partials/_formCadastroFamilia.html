@@ -1,4 +1,13 @@
-<form hx-post="/pessoas" hx-target="#offcanvas-body-content" hx-swap="innerHTML">
+<form hx-post="/familias" hx-target="#offcanvas-body-content" hx-swap="innerHTML">
+
+    <div class="mb-3">
+        <label for="nomeResponsavelFamiliar" class="form-label">Nome Responsável Familiar <span style="color: #b02a37"> O responsável deve sido cadastrado na área de pessoas.</span></label>
+        <input type="text" class="form-control" id="nomeResponsavelFamiliar" name="nomeResponsavelFamiliar" required>
+    </div>
+
+    <hr>
+        <h6 >Cadastro de Membros Familiares</h6>
+    <hr>
     <div class="mb-3">
         <label for="nome" class="form-label">Nome Completo</label>
         <input type="text" class="form-control" id="nome" name="nome" required>
@@ -44,6 +53,7 @@
         <label for="complemento" class="form-label">Complemento</label>
         <input type="complemento" class="form-control" id="complemento" name="complemento" disabled>
     </div>
+
     <div class="mb-3">
         <label for="bairro" class="form-label">Bairro</label>
         <input type="bairro" class="form-control" id="bairro" name="bairro" disabled>
@@ -55,34 +65,26 @@
     </div>
 
     <div class="row mb-3 align-items-center">
+
         <div class="col-md-6">
             <label for="uf" class="form-label">UF</label>
             <input type="uf" class="form-control" id="uf" name="uf" disabled>
         </div>
 
-        <div class="col-md-6 pt-md-4">
-            <div class="form-check form-switch pt-1">
-                <input class="form-check-input" type="checkbox" id="pessoaVoluntario" name="pessoaVoluntario">
-                <label class="form-check-label" for="pessoaVoluntario"> Essa pessoa será um voluntário? </label>
-            </div>
+        <div class="col-md-6 ">
+            <label for="grauParentesco" class="form-label">Grau de Parentesco</label>
+            <select class="form-select" aria-label="Default select example" id="grauParentesco" name="grauParentesco" required>
+                <option selected>Selecione</option>
+                <option value="Filho">Filho</option>
+                <option value="Esposa">Esposa</option>
+                <option value="Filha">Filha</option>
+                <option value="Primo">Primo</option>
+                <option value="Sobrinho">Sobrinho</option>
+                <option value="Avó">Avó</option>
+                <option value="Avô">Avô</option>
+            </select>
         </div>
         <div class="my-3"></div>
-    </div>
-
-    <div id="cadastroVoluntario" class="d-none">
-        <hr>
-        <h6 >Cadastro de Voluntário</h6>
-        <hr>
-        <div class="mb-3">
-            <label for="profissaoHabilidade" class="form-label">Profissao/Habilidade</label>
-            <input type="text" class="form-control" id="profissaoHabilidade" name="profissaoHabilidade">
-        </div>
-        <div class="mb-3">
-            <div class="form-check form-switch pt-1">
-                <input class="form-check-input" type="checkbox" id="ativoVoluntario" name="ativoVoluntario">
-                <label class="form-check-label" for="ativoVoluntario"> Esse voluntário está ativo? </label>
-            </div>
-        </div>
     </div>
 
     <div class="d-grid mt-4">
@@ -91,17 +93,3 @@
         </button>
     </div>
 </form>
-
-<script>
-    document.getElementById('pessoaVoluntario').addEventListener('change', function() {
-        const divCadastro = document.getElementById('cadastroVoluntario');
-
-        if (this.checked) {
-            divCadastro.classList.remove('d-none');
-        } else {
-            divCadastro.classList.add('d-none');
-            document.getElementById('profissaoHabilidade').value = '';
-            document.getElementById('ativoVoluntario').checked = false;
-        }
-    });
-</script>

@@ -1,11 +1,22 @@
 package com.ong.sias.model;
 
+import jakarta.persistence.*;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 @Data
-public class Voluntario {
+@EqualsAndHashCode(callSuper = true)
+@Entity
+@Table(name = "Voluntario")
+@PrimaryKeyJoinColumn(name = "CodPessoa")
+public class Voluntario extends Pessoa{
 
-    public int codVoluntario;
-    public String profissaoHabilidade;
-    public boolean ativo;
+    @Column(name = "CodVoluntario", insertable = false, updatable = false)
+    private int codVoluntario;
+
+    @Column(name = "ProfissaoHabilidade")
+    private String profissaoHabilidade;
+
+    @Column(name = "Ativo")
+    private boolean ativo;
 }

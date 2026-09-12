@@ -19,7 +19,7 @@
         .sidebar-sias {
             border-right: 1px solid rgba(255, 255, 255, 0.05) !important;
             transition: width 0.3s ease;
-            background-color: #212529; /* Garante cor base na sidebar */
+            background-color: #212529;
         }
 
         .sidebar-sias .nav-link {
@@ -69,9 +69,8 @@
             box-shadow: 0 14px 25px rgba(0, 0, 0, 0.5);
         }
 
-        /* =========================================
-           ESTILO DOS CAMPOS DE FORMULÁRIO (TEMAS)
-           ========================================= */
+
+
         .form-control {
             border: 1px solid #adb5bd;
             background-color: #ffffff;
@@ -135,12 +134,96 @@
         .bg-dark .card .text-muted {
             color: #adb5bd !important;
         }
+
+        .theme-switch {
+            position: relative;
+            display: inline-block;
+            width: 54px;
+            height: 28px;
+            margin: 0;
+        }
+        .theme-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        .theme-switch-slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-color: #6c757d;
+            transition: 0.4s;
+            border-radius: 34px;
+        }
+        .theme-switch input:checked + .theme-switch-slider {
+            /*background-color: var(--sias-roxo);*/
+        }
+        .theme-switch-icon {
+            position: absolute;
+            height: 22px;
+            width: 22px;
+            left: 3px;
+            bottom: 3px;
+            background-color: white;
+            border-radius: 50%;
+            transition: 0.4s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 13px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+        .theme-switch input:checked + .theme-switch-slider .theme-switch-icon {
+            transform: translateX(26px);
+        }
+
+        .form-switch .form-check-input:focus {
+            box-shadow: 0 0 0 0.25rem rgba(76, 29, 149, 0.25);
+        }
+
+
+        .bg-dark .form-switch .form-check-input {
+            background-color: #373b3e;
+            border-color: #6c757d;
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='3' fill='rgba%28255, 255, 255, 0.6%29'/%3e%3c/svg%3e");
+        }
+
+        .bg-dark .form-switch .form-check-input:focus {
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='3' fill='rgba%28255, 255, 255, 0.9%29'/%3e%3c/svg%3e");
+        }
+
+        .bg-dark .form-switch .form-check-input:checked {
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='3' fill='%23fff'/%3e%3c/svg%3e");
+        }
+
+        .form-select {
+            transition: background-color 0.3s, border-color 0.3s, color 0.3s;
+        }
+
+        .bg-dark .form-select {
+            background-color: #212529;
+            border: 1px solid #495057;
+            color: #ffffff;
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23ffffff' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m2 5 6 6 6-6'/%3e%3c/svg%3e");
+        }
+
+        .bg-dark .form-select:focus {
+            background-color: #2b3035;
+            border-color: #6c757d;
+            color: #ffffff;
+            box-shadow: 0 0 0 0.25rem rgba(255, 255, 255, 0.1);
+        }
+
+        .bg-dark .form-select option {
+            background-color: #212529;
+            color: #ffffff;
+        }
+
     </style>
 </head>
 
 <body class="bg-dark text-white d-flex vh-100 overflow-hidden" id="corpo-pagina">
 
-<!-- Sidebar Restaurada -->
 <div class="d-flex flex-column flex-shrink-0 p-3 shadow-lg sidebar-sias" style="width: 280px;" id="sidebar">
     <a href="/" class="d-flex justify-content-center mb-3 mb-md-0 text-decoration-none w-100 px-1 mt-1">
         <i class="fa-solid fa-earth-americas fs-3 me-3 logo-icon"></i>
@@ -162,9 +245,9 @@
             </a>
         </li>
         <li>
-            <a href="/visitas" class="nav-link" title="Visitas">
-                <i class="fa-solid fa-map-location-dot me-3"></i>
-                <span class="sidebar-text">Visitas</span>
+            <a href="/familias" class="nav-link" title="Visitas">
+                <i class="fa-solid fa-people-group me-3"></i>
+                <span class="sidebar-text">Familias</span>
             </a>
         </li>
     </ul>
@@ -174,11 +257,16 @@
     <div class="d-flex align-items-center justify-content-between user-container px-2 pb-2">
         <div class="d-flex align-items-center gap-3 text-white">
             <i class="fa-solid fa-circle-user fs-4 text-white-50"></i>
-            <span class="user-text fw-medium">Usuário Admin</span>
+            <span class="user-text fw-medium">Admin</span>
         </div>
-        <button class="btn text-white-50 border-0 user-text p-0" id="btn-tema" title="Mudar Fundo">
-            <i class="fa-solid fa-circle-half-stroke fs-5 hover-white"></i>
-        </button>
+        <label class="theme-switch user-text" title="Alternar Tema">
+            <input type="checkbox" id="switch-tema" checked>
+            <span class="theme-switch-slider">
+            <span class="theme-switch-icon">
+                <i id="icone-dentro-bolinha" class="fa-solid fa-moon text-dark"></i>
+            </span>
+        </span>
+        </label>
     </div>
 </div>
 
@@ -199,9 +287,9 @@
     </button>
 </div>
 
-<div class="offcanvas offcanvas-end bg-dark text-white" tabindex="-1" id="offcanvasForm" aria-labelledby="offcanvasFormLabel">
+<div class="offcanvas offcanvas-end bg-dark text-white" tabindex="-1" id="offcanvasForm" aria-labelledby="offcanvasFormLabel" style="width: 600px;">
     <div class="offcanvas-header shadow-sm border-bottom border-secondary" id="offcanvasHeader">
-        <h5 class="offcanvas-title" id="offcanvasFormLabel">Formulário</h5>
+        <h5 class="offcanvas-title" id="offcanvasFormLabel">Cadastro</h5>
         <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close" id="btn-close-offcanvas"></button>
     </div>
 
@@ -216,24 +304,16 @@
 <script th:src="@{/js/bootstrap.bundle.min.js}"></script>
 
 <script>
-    document.getElementById('btn-tema').addEventListener('click', function(event) {
-        event.preventDefault();
+    const switchTema = document.getElementById('switch-tema');
+    const iconeBolinha = document.getElementById('icone-dentro-bolinha');
 
+    switchTema.addEventListener('change', function() {
         const corpo = document.getElementById('corpo-pagina');
         const offcanvas = document.getElementById('offcanvasForm');
         const btnClose = document.getElementById('btn-close-offcanvas');
         const header = document.getElementById('offcanvasHeader');
 
-        if (corpo.classList.contains('bg-dark')) {
-            corpo.classList.remove('bg-dark', 'text-white');
-            corpo.classList.add('bg-light', 'text-dark');
-
-            offcanvas.classList.remove('bg-dark', 'text-white');
-            offcanvas.classList.add('bg-light', 'text-dark');
-
-            btnClose.classList.remove('btn-close-white');
-            header.classList.remove('border-secondary');
-        } else {
+        if (this.checked) {
             corpo.classList.remove('bg-light', 'text-dark');
             corpo.classList.add('bg-dark', 'text-white');
 
@@ -242,6 +322,19 @@
 
             btnClose.classList.add('btn-close-white');
             header.classList.add('border-secondary');
+
+            iconeBolinha.className = 'fa-solid fa-moon text-dark';
+        } else {
+            corpo.classList.remove('bg-dark', 'text-white');
+            corpo.classList.add('bg-light', 'text-dark');
+
+            offcanvas.classList.remove('bg-dark', 'text-white');
+            offcanvas.classList.add('bg-light', 'text-dark');
+
+            btnClose.classList.remove('btn-close-white');
+            header.classList.remove('border-secondary');
+
+            iconeBolinha.className = 'fa-solid fa-sun text-warning';
         }
     });
 
