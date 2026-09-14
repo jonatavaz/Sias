@@ -3,9 +3,45 @@
       th:replace="~{shared/layout :: layoutBase('Pessoas - SIAS', ~{::main}, ${hxUrlFab}, ${iconeFab})}">
 <body>
 <main>
-    <div class="d-flex justify-content-between align-items-center mb-4">
-    </div>
+    <div class="card shadow-sm border-0 p-3">
+        <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0">
+                <thead>
+                <tr>
+                    <th>Nome</th>
+                    <th>CPF</th>
+                    <th>Email</th>
+                    <th>Telefone</th>
+                    <th>Ativo</th>
+                    <th class="text-end">Ações</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="pessoa : ${pessoas}">
+                    <td th:text="${pessoa.nome}"></td>
+                    <td th:text="${pessoa.cpf}"></td>
+                    <td th:text="${pessoa.email}"></td>
+                    <td th:text="${pessoa.telefone}"></td>
+                    <td th:text="${pessoa.usuario.ativo}"></td>
 
+                    <td class="text-end">
+                        <button class="btn btn-sm btn-warning" title="Editar">
+                            <i class="fa-solid fa-pen"></i>
+                        </button>
+                        <button class="btn btn-sm btn-danger" title="Excluir">
+                            <i class="fa-solid fa-trash"></i>
+                        </button>
+                    </td>
+                </tr>
+
+                <tr th:if="${#lists.isEmpty(pessoas)}">
+                    <td colspan="5" class="text-center text-muted py-4">Nenhuma pessoa cadastrada ainda.</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <script th:src="@{/js/pessoa/index.js}"></script>
 </main>
 </body>
 </html>

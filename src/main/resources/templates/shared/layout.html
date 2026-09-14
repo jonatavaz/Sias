@@ -5,9 +5,9 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
     <title th:text="${titulo}">SIAS Base</title>
 
-    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/css/bootstrap/bootstrap.min.css}">
     <script src="https://unpkg.com/htmx.org@1.9.11"></script>
-
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <style>
         :root {
             --sias-roxo: #4C1D95;
@@ -218,6 +218,20 @@
             background-color: #212529;
             color: #ffffff;
         }
+        .bg-dark .table {
+            --bs-table-bg: transparent;
+            --bs-table-color: #f8f9fa;
+            --bs-table-hover-color: #f8f9fa;
+            --bs-table-hover-bg: rgba(255, 255, 255, 0.075);
+            color: var(--bs-table-color);
+        }
+
+        .bg-dark .table > :not(caption) > * > * {
+            background-color: var(--bs-table-bg);
+            color: var(--bs-table-color);
+            border-bottom-color: #495057;
+        }
+
 
     </style>
 </head>
@@ -301,53 +315,10 @@
     </div>
 </div>
 
-<script th:src="@{/js/bootstrap.bundle.min.js}"></script>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script th:src="@{/js/bootstrap/bootstrap.bundle.min.js}"></script>
+<script th:src="@{/js/global/index.js}"></script>
 
-<script>
-    const switchTema = document.getElementById('switch-tema');
-    const iconeBolinha = document.getElementById('icone-dentro-bolinha');
-
-    switchTema.addEventListener('change', function() {
-        const corpo = document.getElementById('corpo-pagina');
-        const offcanvas = document.getElementById('offcanvasForm');
-        const btnClose = document.getElementById('btn-close-offcanvas');
-        const header = document.getElementById('offcanvasHeader');
-
-        if (this.checked) {
-            corpo.classList.remove('bg-light', 'text-dark');
-            corpo.classList.add('bg-dark', 'text-white');
-
-            offcanvas.classList.remove('bg-light', 'text-dark');
-            offcanvas.classList.add('bg-dark', 'text-white');
-
-            btnClose.classList.add('btn-close-white');
-            header.classList.add('border-secondary');
-
-            iconeBolinha.className = 'fa-solid fa-moon text-dark';
-        } else {
-            corpo.classList.remove('bg-dark', 'text-white');
-            corpo.classList.add('bg-light', 'text-dark');
-
-            offcanvas.classList.remove('bg-dark', 'text-white');
-            offcanvas.classList.add('bg-light', 'text-dark');
-
-            btnClose.classList.remove('btn-close-white');
-            header.classList.remove('border-secondary');
-
-            iconeBolinha.className = 'fa-solid fa-sun text-warning';
-        }
-    });
-
-    const sidebar = document.getElementById('sidebar');
-
-    document.addEventListener('show.bs.offcanvas', function () {
-        sidebar.classList.add('sidebar-collapsed');
-    });
-
-    document.addEventListener('hidden.bs.offcanvas', function () {
-        sidebar.classList.remove('sidebar-collapsed');
-    });
-</script>
 
 </body>
 </html>
