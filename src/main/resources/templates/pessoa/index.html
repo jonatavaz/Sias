@@ -25,10 +25,16 @@
                     <td th:text="${pessoa.usuario.ativo}"></td>
 
                     <td class="text-end">
-                        <button class="btn btn-sm btn-warning" title="Editar">
+                        <button class="btn btn-sm btn-warning" title="Editar"
+                                th:attr="hx-get=@{/pessoas/editar/{id}(id=${pessoa.codPessoa})}"
+                                hx-target="#offcanvas-body-content"
+                                hx-swap="innerHTML"
+                                data-bs-toggle="offcanvas"
+                                data-bs-target="#offcanvasForm">
                             <i class="fa-solid fa-pen"></i>
                         </button>
-                        <button class="btn btn-sm btn-danger" title="Excluir">
+                        <button class="btn btn-sm btn-danger" title="Excluir"
+                                >
                             <i class="fa-solid fa-trash"></i>
                         </button>
                     </td>

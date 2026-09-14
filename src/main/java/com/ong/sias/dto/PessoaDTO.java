@@ -9,7 +9,6 @@ public class PessoaDTO {
     private String email;
     private Date dataNascimento;
 
-    private EnderecoDTO endereco;
     private VoluntarioDTO voluntario;
 
     public String getNome() {

@@ -38,7 +38,7 @@
 
         <div class="col-md-6 ">
             <label for="cep" class="form-label">CEP</label>
-            <input type="text" class="form-control" id="cep" name="cep">
+            <input type="text" class="form-control" id="cep" name="cep" onblur="BuscarCEP(this.value)">
         </div>
     </div>
     <div class="mb-3">
@@ -47,11 +47,11 @@
     </div>
     <div class="mb-3">
         <label for="numero" class="form-label">Número</label>
-        <input type="numero" class="form-control" id="numero" name="numero" disabled>
+        <input type="numero" class="form-control" id="numero" name="numero" >
     </div>
     <div class="mb-3">
         <label for="complemento" class="form-label">Complemento</label>
-        <input type="complemento" class="form-control" id="complemento" name="complemento" disabled>
+        <input type="complemento" class="form-control" id="complemento" name="complemento" >
     </div>
 
     <div class="mb-3">

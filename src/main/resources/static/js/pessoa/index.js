@@ -6,13 +6,7 @@ async function CadastroPessoa(){
     let telefone = $("#telefone").val();
     let email = $("#email").val();
     let dataNascimento = $("#dataNascimento").val();
-    let cep = $("#cep").val();
-    let endereco = $("#endereco").val();
-    let numero = $("#numero").val();
-    let complemento = $("#complemento").val();
-    let bairro = $("#bairro").val();
-    let cidade = $("#cidade").val();
-    let uf = $("#uf").val();
+
     let profissaoHabilidade = $("#profissaoHabilidade").val();
     let ativoVoluntario = $("#ativoVoluntario").val();
 
@@ -22,15 +16,6 @@ async function CadastroPessoa(){
         telefone:telefone,
         email:email,
         dataNascimento:dataNascimento,
-        endereco: {
-            cep: cep,
-            logradouro: endereco,
-            numero: numero,
-            complemento: complemento,
-            bairro: bairro,
-            cidade: cidade,
-            uf: uf
-        },
         voluntario: {
             profissaoHabilidade: profissaoHabilidade,
             ativo: ativoVoluntario === "true" || ativoVoluntario === "1"
@@ -59,3 +44,4 @@ async function CadastroPessoa(){
         window.Toast.fire({icon: "error", title: "Falha na comunicação com o servidor."});
     }
 }
+

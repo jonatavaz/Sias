@@ -11,4 +11,5 @@ public class Endereco {
     public String complemento;
     public String bairro;
     public String cidade;
+    public String uf;
 }

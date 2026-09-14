@@ -77,4 +77,35 @@ public class PessoaController {
             return ResponseEntity.internalServerError().body("Erro: " + ex.getMessage());
         }
     }
+
+    @GetMapping("/editar/{id}")
+    public String carregarFormularioEdicao(@PathVariable int id, Model model){
+        try{
+            OperacoesBanco<Pessoa> dao = new PessoaDAO();
+            Pessoa pessoa = dao.buscar(id);
+
+            model.addAttribute("pessoa", pessoa);
+
+            return "pessoa/partials/_formCadastroPessoa :: formFragment";
+
+        }catch (SQLException ex){
+            ex.printStackTrace();
+            return "Erro ao buscar pessoa.";
+        }
+    }
+
+    @PostMapping("/atualizar")
+    public String atualizar(Pessoa pessoa) {
+        try {
+            OperacoesBanco<Pessoa> dao = new PessoaDAO();
+
+            dao.atualizar(pessoa);
+
+            return "redirect:/pessoas";
+
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            return "Erro ao atualizar pessoa.";
+        }
+    }
 }

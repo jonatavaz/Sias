@@ -19,19 +19,19 @@ public class Pessoa {
     private ONG ong;
 
     @Column(name = "Nome")
-    public String nome;
+    private String nome;
 
     @Column(name = "CPF")
-    public String cpf;
+    private String cpf;
 
     @Column(name = "DataNascimento")
-    public Date dataNascimento;
+    private Date dataNascimento;
 
     @Column(name = "Email")
-    public String email;
+    private String email;
 
     @Column(name = "Telefone")
-    public String telefone;
+    private String telefone;
 
 
     @Column(name = "CodUsuario")

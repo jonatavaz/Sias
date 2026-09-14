@@ -39,6 +39,30 @@ public class PessoaDAO implements OperacoesBanco<Pessoa>{
 
     @Override
     public Pessoa buscar(int id) throws SQLException {
+        Connection conexao = Conexao.getInstance().getConnection();
+
+        String sql = "SELECT CodPessoa, Nome, CPF, Telefone, Email, DataNascimento FROM Pessoa WHERE CodONG = ? AND CodPessoa = ?";
+
+        try(PreparedStatement preparedStatement = conexao.prepareStatement(sql)){
+            preparedStatement.setInt(1, 1);
+            preparedStatement.setInt(2, id);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            if (resultSet.next()) {
+                Pessoa pessoa = new Pessoa();
+                pessoa.setCodPessoa(resultSet.getInt("CodPessoa"));
+                pessoa.setNome(resultSet.getString("Nome"));
+                pessoa.setCpf(resultSet.getString("CPF"));
+                pessoa.setTelefone(resultSet.getString("Telefone"));
+                pessoa.setEmail(resultSet.getString("Email"));
+
+                java.sql.Date dataNascimentoSql = resultSet.getDate("DataNascimento");
+                if (dataNascimentoSql != null) {
+                    pessoa.setDataNascimento(new java.util.Date(dataNascimentoSql.getTime()));
+                }
+                return pessoa;
+            }
+        }
         return null;
     }
 
