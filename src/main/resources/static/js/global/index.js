@@ -53,3 +53,4 @@ window.Toast = Swal.mixin({
         toast.onmouseleave = Swal.resumeTimer;
     }
 });
+

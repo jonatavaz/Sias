@@ -38,6 +38,35 @@ public class PessoaDAO implements OperacoesBanco<Pessoa>{
     }
 
     @Override
+    public Pessoa buscar(String id) throws SQLException {
+        Connection conexao = Conexao.getInstance().getConnection();
+
+        String sql = "SELECT CodPessoa, Nome, CPF, Telefone, Email, DataNascimento FROM Pessoa WHERE CodONG = ? AND CPF = ?";
+
+        try(PreparedStatement preparedStatement = conexao.prepareStatement(sql)){
+            preparedStatement.setInt(1, 1);
+            preparedStatement.setString(2, id);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            if (resultSet.next()) {
+                Pessoa pessoa = new Pessoa();
+                pessoa.setCodPessoa(resultSet.getInt("CodPessoa"));
+                pessoa.setNome(resultSet.getString("Nome"));
+                pessoa.setCpf(resultSet.getString("CPF"));
+                pessoa.setTelefone(resultSet.getString("Telefone"));
+                pessoa.setEmail(resultSet.getString("Email"));
+
+                java.sql.Date dataNascimentoSql = resultSet.getDate("DataNascimento");
+                if (dataNascimentoSql != null) {
+                    pessoa.setDataNascimento(new java.util.Date(dataNascimentoSql.getTime()));
+                }
+                return pessoa;
+            }
+        }
+        return null;
+    }
+
+    @Override
     public Pessoa buscar(int id) throws SQLException {
         Connection conexao = Conexao.getInstance().getConnection();
 
@@ -71,7 +100,27 @@ public class PessoaDAO implements OperacoesBanco<Pessoa>{
     }
 
     @Override
-    public void deletar(int id) throws SQLException {
+    public void deletar(int id1) throws SQLException {
+        throw new UnsupportedOperationException("A exclusão por 1 IDs não é suportada para a entidade Pessoa.");
+    }
+
+    @Override
+    public void deletar(int id1, int id2) throws SQLException {
+        Connection conexao = Conexao.getInstance().getConnection();
+        String sql = "DELETE FROM Pessoa WHERE CodOng = ? AND CodPessoa = ?";
+
+        try (PreparedStatement preparedStatement = conexao.prepareStatement(sql)) {
+
+            preparedStatement.setInt(1, id1);
+            preparedStatement.setInt(2, id2);
+
+            preparedStatement.executeUpdate();
+        }
+    }
+
+    @Override
+    public void deletar(int id1, int id2, int id3) throws SQLException {
+        throw new UnsupportedOperationException("A exclusão por 3 IDs não é suportada para a entidade Pessoa.");
     }
 
     @Override
@@ -79,7 +128,7 @@ public class PessoaDAO implements OperacoesBanco<Pessoa>{
         List<Pessoa> listaPessoas = new ArrayList<>();
         Connection conexao = Conexao.getInstance().getConnection();
 
-        String sql = "SELECT p.CodPessoa, p.Nome, p.CPF, p.Telefone, p.Email, p.DataNascimento, u.Ativo " +
+        String sql = "SELECT p.CodONG, p.CodPessoa, p.Nome, p.CPF, p.Telefone, p.Email, p.DataNascimento, u.CodUsuario,  u.Ativo " +
                         "FROM Pessoa p " +
                         "INNER JOIN Usuario u ON p.CodPessoa = u.CodPessoa";
 
@@ -101,6 +150,7 @@ public class PessoaDAO implements OperacoesBanco<Pessoa>{
                 }
 
                 Usuario usuario = new Usuario();
+                usuario.setCodUsuario(resultSet.getInt("CodUsuario"));
                 usuario.setAtivo(resultSet.getBoolean("Ativo"));
                 pessoa.setUsuario(usuario);
 

@@ -1,5 +1,7 @@
 package com.ong.sias.dto;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import java.util.Date;
 
 public class PessoaDTO {
@@ -7,12 +9,18 @@ public class PessoaDTO {
     private String cpf;
     private String telefone;
     private String email;
+
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date dataNascimento;
 
     private VoluntarioDTO voluntario;
 
     public String getNome() {
         return this.nome;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
     }
 
     public String getCpf() {

@@ -1,4 +1,9 @@
+window.CadastroFamilia = CadastroFamilia;
+
 async function CadastroFamilia(){
+
+    let cpfResponsavel = $("#cpfResponsavel").val();
+
     let nome = $("#nome").val();
     let cpf = $("#cpf").val();
     let telefone = $("#telefone").val();
@@ -11,13 +16,19 @@ async function CadastroFamilia(){
     let bairro = $("#bairro").val();
     let cidade = $("#cidade").val();
     let uf = $("#uf").val();
+    let grauParentesco = $("#grauParentesco").val();
 
     const pessoaPayload = {
-        nome:nome,
-        cpf:cpf,
-        telefone:telefone,
-        email:email,
-        dataNascimento:dataNascimento,
+        CpfResponsavel : cpfResponsavel,
+
+        pessoa: {
+            nome:nome,
+            cpf:cpf,
+            telefone:telefone,
+            email:email,
+            dataNascimento:dataNascimento,
+        },
+
         endereco: {
             cep: cep,
             logradouro: endereco,
@@ -26,7 +37,8 @@ async function CadastroFamilia(){
             bairro: bairro,
             cidade: cidade,
             uf: uf
-        }
+        },
+        GrauParentesco : grauParentesco
     }
 
     try{

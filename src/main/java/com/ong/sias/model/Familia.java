@@ -3,7 +3,7 @@ package com.ong.sias.model;
 import lombok.Data;
 
 @Data
-public class Familia {
+public class Familia extends Pessoa{
     private int CodFamilia;
     private int CodPessoaResponsavel;
     private int CodEndereco;

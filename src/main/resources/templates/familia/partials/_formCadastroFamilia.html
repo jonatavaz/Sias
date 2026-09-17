@@ -1,8 +1,8 @@
-<form hx-post="/familias" hx-target="#offcanvas-body-content" hx-swap="innerHTML">
+<form hx-target="#offcanvas-body-content" hx-swap="innerHTML">
 
     <div class="mb-3">
-        <label for="nomeResponsavelFamiliar" class="form-label">Nome Responsável Familiar <span style="color: #b02a37"> O responsável deve sido cadastrado na área de pessoas.</span></label>
-        <input type="text" class="form-control" id="nomeResponsavelFamiliar" name="nomeResponsavelFamiliar" required>
+        <label for="cpfResponsavel" class="form-label">CPF do Responsável Familiar <span style="color: #b02a37"> O responsável deve sido cadastrado na área de pessoas.</span></label>
+        <input type="text" class="form-control" id="cpfResponsavel" name="cpfResponsavel" required>
     </div>
 
     <hr>
@@ -88,7 +88,7 @@
     </div>
 
     <div class="d-grid mt-4">
-        <button type="submit" class="btn btn-secondary">
+        <button type="button" onclick="CadastroFamilia()" class="btn btn-secondary">
             <i class="fa-solid fa-floppy-disk me-2"></i>Salvar Cadastro
         </button>
     </div>

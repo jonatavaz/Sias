@@ -108,4 +108,23 @@ public class PessoaController {
             return "Erro ao atualizar pessoa.";
         }
     }
+
+    @DeleteMapping("/deletar/{id1}/{id2}/{id3}")
+    public ResponseEntity<String> deletar(@PathVariable int id1,@PathVariable int id2,@PathVariable  int id3, Model model){
+        //id1 = CodONG, id2 = CodPessoa, id3 = CodUsuario
+
+        try{
+            OperacoesBanco<Usuario> usuarioDAO = new UsuarioDAO();
+            usuarioDAO.deletar(id1, id2, id3);
+
+            OperacoesBanco<Pessoa> pessoaDAO = new PessoaDAO();
+            pessoaDAO.deletar(id1, id2);
+
+            return ResponseEntity.ok("Cadastro excluído com sucesso.");
+
+        }catch (SQLException ex){
+            ex.printStackTrace();
+            return ResponseEntity.internalServerError().body("Erro ao excluir o registro do banco de dados.");
+        }
+    }
 }
