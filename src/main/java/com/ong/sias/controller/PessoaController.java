@@ -3,9 +3,11 @@ package com.ong.sias.controller;
 import com.ong.sias.dao.OperacoesBanco;
 import com.ong.sias.dao.PessoaDAO;
 import com.ong.sias.dao.UsuarioDAO;
+import com.ong.sias.dao.VoluntarioDAO;
 import com.ong.sias.dto.PessoaDTO;
 import com.ong.sias.model.Pessoa;
 import com.ong.sias.model.Usuario;
+import com.ong.sias.model.Voluntario;
 import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
 import org.springframework.stereotype.Controller;
@@ -65,6 +67,21 @@ public class PessoaController {
 
             OperacoesBanco<Usuario> usuarioDAO = new UsuarioDAO();
             usuarioDAO.salvar(usuario);
+
+            if (payload.isPessoaVoluntario()){
+                Voluntario voluntario = new Voluntario();
+                voluntario.setCodPessoa(pessoa.getCodPessoa());
+
+                if (payload.getVoluntario() != null) {
+                    voluntario.setProfissaoHabilidade(payload.getVoluntario().getProfissaoHabilidade());
+                    voluntario.setAtivo(payload.getVoluntario().getAtivo());
+                } else {
+                    voluntario.setAtivo(true);
+                }
+
+                OperacoesBanco<Voluntario> voluntarioDAO = new VoluntarioDAO();
+                voluntarioDAO.salvar(voluntario);
+            }
 
             return ResponseEntity.ok("Cadastro realizado com sucesso");
         }catch (IllegalArgumentException ex) {

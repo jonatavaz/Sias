@@ -4,31 +4,39 @@ package com.ong.sias.dto;
 
 public class FamiliaDTO {
 
-    private PessoaDTO pessoa;
+    private int codFamilia;
 
-    private String CpfResponsavel;
-    private int CodPessoaResponsavel;
-    private int CodEndereco;
-    private String Telefone;
-    private String GrauParentesco;
+    private String cpfResponsavel;
+    private int codPessoaResponsavel;
+    private int codEndereco;
+    private String telefone;
+    private String grauParentesco;
 
     private EnderecoDTO endereco;
+    private PessoaDTO pessoa;
 
-    public String getCpfResponsavel() {
-        return this.CpfResponsavel;
-    }
-    public int getCodPessoaResponsave() {
-        return this.CodPessoaResponsavel;
-    }
-    public int getCodEndereco() {
-        return this.CodEndereco;
-    }
-    public String getTelefone() {
-        return this.Telefone;
-    }
-    public String getGrauParentesco() {
-        return this.GrauParentesco;
-    }
+    public FamiliaDTO() {}
+
+
+    public int getCodFamilia() { return codFamilia; }
+    public void setCodFamilia(int codFamilia) { this.codFamilia = codFamilia; }
+
+    public String getCpfResponsavel() { return cpfResponsavel; }
+    public void setCpfResponsavel(String cpfResponsavel) { this.cpfResponsavel = cpfResponsavel; }
+
+    // (Corrigido o erro de digitação que faltava o "l" no final)
+    public int getCodPessoaResponsavel() { return codPessoaResponsavel; }
+    public void setCodPessoaResponsavel(int codPessoaResponsavel) { this.codPessoaResponsavel = codPessoaResponsavel; }
+
+    public int getCodEndereco() { return codEndereco; }
+    public void setCodEndereco(int codEndereco) { this.codEndereco = codEndereco; }
+
+    public String getTelefone() { return telefone; }
+    public void setTelefone(String telefone) { this.telefone = telefone; }
+
+    public String getGrauParentesco() { return grauParentesco; }
+    public void setGrauParentesco(String grauParentesco) { this.grauParentesco = grauParentesco; }
+
     public EnderecoDTO getEndereco() { return endereco; }
     public void setEndereco(EnderecoDTO endereco) { this.endereco = endereco; }
 

@@ -1,9 +1,50 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
-      th:replace="~{shared/layout :: layoutBase('Familas - SIAS', ~{::main}, ${hxUrlFab}, ${iconeFab})}">
+      th:replace="~{shared/layout :: layoutBase('Famílias - SIAS', ~{::main}, ${hxUrlFab}, ${iconeFab})}">
 <body>
 <main>
-    <div class="d-flex justify-content-between align-items-center mb-4">
+    <div class="card shadow-sm border-0 p-3">
+        <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0">
+                <thead>
+                <tr>
+                    <th>Responsável</th>
+                    <th>Membro Familiar</th>
+                    <th>Grau de Parentesco</th>
+                    <th>Endereço Completo</th>
+                    <th class="text-end">Ações</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="familia : ${familias}">
+                    <td th:text="${familia.responsavelFamilia}"></td>
+                    <td th:text="${familia.membroFamiliar}"></td>
+                    <td th:text="${familia.grauParentesco}"></td>
+                    <td th:text="${familia.enderecoCompleto}"></td>
+
+                    <td class="text-end">
+                        <button class="btn btn-sm btn-warning" title="Editar"
+                                th:attr="hx-get=@{/familias/editar/{id}(id=${familia.codFamilia})}"
+                                hx-target="#offcanvas-body-content"
+                                hx-swap="innerHTML"
+                                data-bs-toggle="offcanvas"
+                                data-bs-target="#offcanvasForm">
+                            <i class="fa-solid fa-pen"></i>
+                        </button>
+
+                        <button class="btn btn-sm btn-danger" title="Excluir"
+                                th:onclick="|DeletarFamilia(${1}, ${familia.codFamilia})|">
+                            <i class="fa-solid fa-trash"></i>
+                        </button>
+                    </td>
+                </tr>
+
+                <tr th:if="${#lists.isEmpty(familias)}">
+                    <td colspan="5" class="text-center text-muted py-4">Nenhuma família cadastrada ainda.</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
     <script th:src="@{/js/familia/index.js}"></script>
 </main>

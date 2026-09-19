@@ -1,16 +1,20 @@
-window.CadastroFamilia = CadastroFamilia;
+window.SalvarFamilia = SalvarFamilia;
 
-async function CadastroFamilia(){
+async function SalvarFamilia() {
+
+    let codFamilia = parseInt($("#codFamilia").val()) || 0;
+    let codEndereco = parseInt($("#codEndereco").val()) || 0;
+    let codPessoaResponsavel = parseInt($("#codPessoaResponsavel").val()) || 0;
+    let codPessoa = parseInt($("#codPessoa").val()) || 0;
 
     let cpfResponsavel = $("#cpfResponsavel").val();
-
     let nome = $("#nome").val();
     let cpf = $("#cpf").val();
     let telefone = $("#telefone").val();
     let email = $("#email").val();
     let dataNascimento = $("#dataNascimento").val();
     let cep = $("#cep").val();
-    let endereco = $("#endereco").val();
+    let logradouro = $("#logradouro").val();
     let numero = $("#numero").val();
     let complemento = $("#complemento").val();
     let bairro = $("#bairro").val();
@@ -18,47 +22,57 @@ async function CadastroFamilia(){
     let uf = $("#uf").val();
     let grauParentesco = $("#grauParentesco").val();
 
-    const pessoaPayload = {
-        CpfResponsavel : cpfResponsavel,
+    const payload = {
+        codFamilia: codFamilia,
+        codEndereco: codEndereco,
+        codPessoaResponsavel: codPessoaResponsavel,
+        cpfResponsavel: cpfResponsavel,
+        telefone: telefone,
+        grauParentesco: grauParentesco,
 
         pessoa: {
-            nome:nome,
-            cpf:cpf,
-            telefone:telefone,
-            email:email,
-            dataNascimento:dataNascimento,
+            codPessoa: codPessoa,
+            nome: nome,
+            cpf: cpf,
+            telefone: telefone,
+            email: email,
+            dataNascimento: dataNascimento
         },
 
         endereco: {
             cep: cep,
-            logradouro: endereco,
+            logradouro: logradouro,
             numero: numero,
             complemento: complemento,
             bairro: bairro,
             cidade: cidade,
             uf: uf
-        },
-        GrauParentesco : grauParentesco
-    }
+        }
+    };
 
-    try{
-        const response = await fetch('/familias/cadastrar',{
+    const url = codFamilia > 0 ? '/familias/atualizar' : '/familias/cadastrar';
+
+    try {
+        const response = await fetch(url, {
             method: 'POST',
-            headers:{
+            headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify(pessoaPayload)
+            body: JSON.stringify(payload)
         });
 
-        if(response.ok){
-            window.Toast.fire({icon: "success", title: "Cadastro realizado com sucesso!"});
+        if (response.ok) {
+            const msgSucesso = await response.text();
+            window.Toast.fire({icon: "success", title: msgSucesso});
 
-            $("input").val("");
-        }else{
+            setTimeout(() => window.location.reload(), 1000);
+
+        } else {
             const msgErro = await response.text();
             window.Toast.fire({icon: "error", title: msgErro});
         }
-    }catch (error){
+    } catch (error) {
+        console.error(error);
         window.Toast.fire({icon: "error", title: "Falha na comunicação com o servidor."});
     }
 }
@@ -81,13 +95,14 @@ async function BuscarCEP(cep){
             return;
         }
 
-        document.getElementById('endereco').value = data.logradouro;
+        document.getElementById('logradouro').value = data.logradouro;
         document.getElementById('bairro').value = data.bairro;
         document.getElementById('cidade').value = data.localidade;
         document.getElementById('uf').value = data.uf;
 
         document.getElementById('numero').focus();
     }catch (error){
+        console.error("Erro ao buscar o CEP:", error);
         window.Toast.fire({icon: "error", title: "Falha na comunicação com o servidor."});
     }
 }

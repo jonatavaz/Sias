@@ -39,12 +39,34 @@ public class EnderecoDAO implements OperacoesBanco<Endereco> {
 
     @Override
     public Endereco buscar(String id) throws SQLException {
-        throw new UnsupportedOperationException("A busca por string indisponível para a entidade Endereco.");
+        return null;
+
     }
 
     @Override
     public Endereco buscar(int id) throws SQLException {
+        Connection conexao = Conexao.getInstance().getConnection();
 
+        String sql = "SELECT CodEndereco, CEP, Logradouro, Numero, Complemento, Bairro, Cidade, UF FROM Endereco WHERE CodEndereco = ?;";
+
+        try(PreparedStatement preparedStatement = conexao.prepareStatement(sql)){
+            preparedStatement.setInt(1, id);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            if (resultSet.next()) {
+                Endereco endereco = new Endereco();
+                endereco.setCodEndereco(resultSet.getInt("CodEndereco"));
+                endereco.setCep(resultSet.getString("CEP"));
+                endereco.setLogradouro(resultSet.getString("Logradouro"));
+                endereco.setNumero(resultSet.getString("Numero"));
+                endereco.setComplemento(resultSet.getString("Complemento"));
+                endereco.setBairro(resultSet.getString("Bairro"));
+                endereco.setCidade(resultSet.getString("Cidade"));
+                endereco.setUf(resultSet.getString("UF"));
+
+                return endereco;
+            }
+        }
         return null;
     }
 

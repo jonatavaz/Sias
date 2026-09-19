@@ -128,9 +128,14 @@ public class PessoaDAO implements OperacoesBanco<Pessoa>{
         List<Pessoa> listaPessoas = new ArrayList<>();
         Connection conexao = Conexao.getInstance().getConnection();
 
-        String sql = "SELECT p.CodONG, p.CodPessoa, p.Nome, p.CPF, p.Telefone, p.Email, p.DataNascimento, u.CodUsuario,  u.Ativo " +
-                        "FROM Pessoa p " +
-                        "INNER JOIN Usuario u ON p.CodPessoa = u.CodPessoa";
+        String sql = """
+                SELECT p1.Nome AS ResponsavelFamilia, p2.Nome AS MembroFamiliar, mf.GrauParentesco, CONCAT(e.Logradouro, ', ', e.Numero, ' - ', e.Complemento, ' - ', e.Bairro, ', ', e.Cidade, '/', e.UF, ' - CEP: ', e.CEP) AS EnderecoCompleto 
+                FROM Familia f
+                INNER JOIN MembroFamilia mf ON f.CodONG = mf.CodONG AND f.CodFamilia = mf.CodFamilia
+                INNER JOIN Pessoa P1 ON f.CodONG = p1.CodONG AND f.CodPessoaResponsavel = p1.CodPessoa
+                INNER JOIN Pessoa P2 ON f.CodONG = p2.CodONG AND mf.CodPessoa = p2.CodPessoa
+                INNER JOIN Endereco e ON f.CodONG = p2.CodONG AND f.CodEndereco = e.CodEndereco
+                """;
 
         try(PreparedStatement preparedStatement = conexao.prepareStatement(sql)){
             ResultSet resultSet = preparedStatement.executeQuery();

@@ -7,9 +7,15 @@ async function CadastroPessoa(){
     let telefone = $("#telefone").val();
     let email = $("#email").val();
     let dataNascimento = $("#dataNascimento").val();
+    let pessoaVoluntario = $("#pessoaVoluntario").is(":checked");
+    console.log('pessoaVoluntario', pessoaVoluntario)
+    let profissaoHabilidade;
+    let ativoVoluntario;
 
-    let profissaoHabilidade = $("#profissaoHabilidade").val();
-    let ativoVoluntario = $("#ativoVoluntario").val();
+    if(pessoaVoluntario === true){
+        profissaoHabilidade = $("#profissaoHabilidade").val();
+        ativoVoluntario = $("#ativoVoluntario").is(":checked");
+    }
 
     const pessoaPayload = {
         nome:nome,
@@ -17,9 +23,10 @@ async function CadastroPessoa(){
         telefone:telefone,
         email:email,
         dataNascimento:dataNascimento,
+        pessoaVoluntario: pessoaVoluntario,
         voluntario: {
             profissaoHabilidade: profissaoHabilidade,
-            ativo: ativoVoluntario === "true" || ativoVoluntario === "1"
+            ativo: ativoVoluntario
         }
 
     }
