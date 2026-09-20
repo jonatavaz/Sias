@@ -42,10 +42,11 @@ async function CadastroPessoa(){
 
         if(response.ok){
             window.Toast.fire({icon: "success", title: "Cadastro realizado com sucesso!"});
-
+            const offcanvas = bootstrap.Offcanvas.getInstance(document.getElementById('offcanvasForm'));
+            if (offcanvas) offcanvas.hide();
             setTimeout(() => {
-                window.location.href = '/pessoas'; // Rota do seu @GetMapping
-            }, 1500);
+                window.location.href = '/pessoas';
+        }, 1500);
             $("input").val("");
         }else{
             const msgErro = await response.text();

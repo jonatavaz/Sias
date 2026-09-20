@@ -41,6 +41,23 @@ public class MembroFamiliaDAO implements OperacoesBanco<MembroFamilia>{
 
     @Override
     public void atualizar(MembroFamilia membroFamilia) throws SQLException {
+        Connection conexao = Conexao.getInstance().getConnection();
+
+        String sql = """
+                    UPDATE MembroFamilia SET GrauParentesco = ?, CodUsuario_Modificado = ?, DataHora_Modificado = ? WHERE CodONG = ? AND CodFamilia = ? AND CodPessoa = ?
+                    """;
+
+        try (PreparedStatement preparedStatement = conexao.prepareStatement(sql)){
+
+            preparedStatement.setString(1, membroFamilia.getGrauParentesco());
+            preparedStatement.setInt(2, 0);
+            preparedStatement.setTimestamp(3, new java.sql.Timestamp(System.currentTimeMillis()));
+            preparedStatement.setInt(4, 1);
+            preparedStatement.setInt(5, membroFamilia.getCodFamilia());
+            preparedStatement.setInt(6, membroFamilia.getCodPessoa());
+
+            preparedStatement.executeUpdate();
+        }
     }
 
     @Override

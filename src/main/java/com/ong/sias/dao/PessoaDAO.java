@@ -96,7 +96,34 @@ public class PessoaDAO implements OperacoesBanco<Pessoa>{
     }
 
     @Override
-    public void atualizar(Pessoa usuario) throws SQLException {
+    public void atualizar(Pessoa pessoa) throws SQLException {
+
+        Connection conexao = Conexao.getInstance().getConnection();
+
+        String sql = """
+                    UPDATE Pessoa SET Nome = ?, CPF = ?, Telefone = ?, Email = ?, DataNascimento = ?, CodUsuario_Modificado = ?, DataHora_Modificado = ? WHERE CodONG = ? AND CodPessoa = ?
+                    """;
+
+        try (PreparedStatement preparedStatement = conexao.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)){
+            preparedStatement.setString(1, pessoa.getNome());
+            preparedStatement.setString(2, pessoa.getCpf());
+            preparedStatement.setString(3, pessoa.getTelefone());
+            preparedStatement.setString(4, pessoa.getEmail());
+            preparedStatement.setDate(5, new java.sql.Date(pessoa.getDataNascimento().getTime()));
+            preparedStatement.setInt(6, 0);
+            preparedStatement.setTimestamp(7, new java.sql.Timestamp(System.currentTimeMillis()));
+            preparedStatement.setInt(8, 1);
+            preparedStatement.setInt(9, pessoa.getCodPessoa());
+
+
+            preparedStatement.executeUpdate();
+
+            try(ResultSet resultSet = preparedStatement.getGeneratedKeys()){
+                if (resultSet.next()){
+                    pessoa.setCodPessoa(resultSet.getInt(1));
+                }
+            }
+        }
     }
 
     @Override
@@ -129,13 +156,11 @@ public class PessoaDAO implements OperacoesBanco<Pessoa>{
         Connection conexao = Conexao.getInstance().getConnection();
 
         String sql = """
-                SELECT p1.Nome AS ResponsavelFamilia, p2.Nome AS MembroFamiliar, mf.GrauParentesco, CONCAT(e.Logradouro, ', ', e.Numero, ' - ', e.Complemento, ' - ', e.Bairro, ', ', e.Cidade, '/', e.UF, ' - CEP: ', e.CEP) AS EnderecoCompleto 
-                FROM Familia f
-                INNER JOIN MembroFamilia mf ON f.CodONG = mf.CodONG AND f.CodFamilia = mf.CodFamilia
-                INNER JOIN Pessoa P1 ON f.CodONG = p1.CodONG AND f.CodPessoaResponsavel = p1.CodPessoa
-                INNER JOIN Pessoa P2 ON f.CodONG = p2.CodONG AND mf.CodPessoa = p2.CodPessoa
-                INNER JOIN Endereco e ON f.CodONG = p2.CodONG AND f.CodEndereco = e.CodEndereco
-                """;
+            SELECT p.CodPessoa, p.Nome, p.CPF, p.Telefone, p.Email, p.DataNascimento, 
+                   u.CodUsuario, u.Ativo 
+            FROM Pessoa p
+            LEFT JOIN Usuario u ON p.CodUsuario = u.CodUsuario
+            """;
 
         try(PreparedStatement preparedStatement = conexao.prepareStatement(sql)){
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -147,8 +172,8 @@ public class PessoaDAO implements OperacoesBanco<Pessoa>{
                 pessoa.setNome(resultSet.getString("Nome"));
                 pessoa.setCpf(resultSet.getString("CPF"));
                 pessoa.setTelefone(resultSet.getString("Telefone"));
-
                 pessoa.setEmail(resultSet.getString("Email"));
+
                 java.sql.Date dataNascimentoSql = resultSet.getDate("DataNascimento");
                 if (dataNascimentoSql != null) {
                     pessoa.setDataNascimento(new java.util.Date(dataNascimentoSql.getTime()));
@@ -162,7 +187,7 @@ public class PessoaDAO implements OperacoesBanco<Pessoa>{
                 listaPessoas.add(pessoa);
             }
         }
-
         return listaPessoas;
     }
+
 }

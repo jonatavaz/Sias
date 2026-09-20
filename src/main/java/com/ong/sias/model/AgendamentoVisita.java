@@ -1,10 +1,20 @@
 package com.ong.sias.model;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 @Data
-public class AgendamentoVisita {
-    public int codVisita;
-    public String tipoVisita;
-    public boolean realizada;
+@EqualsAndHashCode(callSuper = true)
+public class AgendamentoVisita extends RegistroAssistencial {
+
+    private int codVisita;
+    private Integer codVoluntario;
+    private String tipoVisita;
+    private boolean realizada;
+
+    @Override
+    public String obterResumo() {
+        String status = this.realizada ? "Realizada" : "Agendada";
+        return "Visita: " + tipoVisita + " | Status: " + status;
+    }
 }

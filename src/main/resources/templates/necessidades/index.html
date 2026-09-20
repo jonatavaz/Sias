@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{shared/layout :: layoutBase('Necessidades - SIAS', ~{::main}, ${hxUrlFab}, ${iconeFab})}">
+<body>
+<main>
+  <div class="card shadow-sm border-0 p-3">
+    <div class="table-responsive">
+      <table class="table table-hover align-middle mb-0">
+        <thead>
+        <tr>
+          <th>Família (Responsável)</th>
+          <th>Tipo</th>
+          <th>Descrição</th>
+          <th>Status</th>
+          <th>Resumo</th>
+          <th class="text-end">Ações</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="necessidade : ${necessidades}">
+          <td th:text="${necessidade.nomeResponsavel}"></td>
+
+          <td th:text="${necessidade.tipoNecessidade}"></td>
+
+          <td th:text="${#strings.abbreviate(necessidade.descricao, 50)}"></td>
+
+          <td>
+            <span th:if="${necessidade.atendida}" class="badge bg-success">Atendida</span>
+            <span th:unless="${necessidade.atendida}" class="badge bg-warning text-dark">Pendente</span>
+          </td>
+
+          <td th:text="${necessidade.obterResumo()}" class="text-muted fst-italic"></td>
+
+          <td class="text-end">
+            <button class="btn btn-sm btn-warning" title="Editar"
+                    th:attr="hx-get=@{/necessidades/editar/{id}(id=${necessidade.codNecessidade})}"
+                    hx-target="#offcanvas-body-content"
+                    hx-swap="innerHTML"
+                    data-bs-toggle="offcanvas"
+                    data-bs-target="#offcanvasForm">
+              <i class="fa-solid fa-pen"></i>
+            </button>
+            <button class="btn btn-sm btn-danger" title="Excluir"
+                    th:onclick="|DeletarNecessidade(${necessidade.codFamilia}, ${necessidade.codNecessidade})|">
+              <i class="fa-solid fa-trash"></i>
+            </button>
+          </td>
+        </tr>
+
+        <tr th:if="${#lists.isEmpty(necessidades)}">
+          <td colspan="6" class="text-center text-muted py-4">Nenhuma necessidade cadastrada ainda.</td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <script th:src="@{/js/necessidade/index.js}"></script>
+</main>
+</body>
+</html>

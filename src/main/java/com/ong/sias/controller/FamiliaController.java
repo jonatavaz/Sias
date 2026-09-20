@@ -158,15 +158,15 @@ public class FamiliaController {
             OperacoesBanco<Familia> familiaDAO = new FamiliaDAO();
             Familia familia = familiaDAO.buscar(payload.getCodFamilia());
 
-            if (familia != null) {
-                familia.setCodPessoaResponsavel(pessoaEncontrada.getCodPessoa());
-
-                if(payload.getTelefone() != null) {
-                    familia.setTelefone(payload.getTelefone());
-                }
-
-                familiaDAO.atualizar(familia);
-            }
+//            if (familia != null) {
+//                familia.setCodPessoaResponsavel(pessoaEncontrada.getCodPessoa());
+//
+//                if(payload.getTelefone() != null) {
+//                    familia.setTelefone(payload.getTelefone());
+//                }
+//
+//                familiaDAO.atualizar(familia);
+//            }
 
             OperacoesBanco<MembroFamilia> membroFamiliaDAO = new MembroFamiliaDAO();
             MembroFamilia membroFamilia = new MembroFamilia();

@@ -7,7 +7,7 @@
 
     <div class="mb-3">
         <label for="cpfResponsavel" class="form-label">CPF do Responsável Familiar <span style="color: #b02a37"> O responsável deve ter sido cadastrado na área de pessoas.</span></label>
-        <input type="text" class="form-control" id="cpfResponsavel" name="cpfResponsavel" th:value="${payload?.cpfResponsavel}" required>
+        <input type="text" class="form-control" id="cpfResponsavel" name="cpfResponsavel" th:value="${payload?.cpfResponsavel}" th:readonly="${payload != null}" required>
     </div>
 
     <hr>

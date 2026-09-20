@@ -64,7 +64,8 @@ async function SalvarFamilia() {
         if (response.ok) {
             const msgSucesso = await response.text();
             window.Toast.fire({icon: "success", title: msgSucesso});
-
+            const offcanvas = bootstrap.Offcanvas.getInstance(document.getElementById('offcanvasForm'));
+            if (offcanvas) offcanvas.hide();
             setTimeout(() => window.location.reload(), 1000);
 
         } else {
@@ -76,7 +77,6 @@ async function SalvarFamilia() {
         window.Toast.fire({icon: "error", title: "Falha na comunicação com o servidor."});
     }
 }
-
 
 async function BuscarCEP(cep){
 

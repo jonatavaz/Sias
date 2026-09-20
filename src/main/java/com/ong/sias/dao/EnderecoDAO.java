@@ -72,6 +72,30 @@ public class EnderecoDAO implements OperacoesBanco<Endereco> {
 
     @Override
     public void atualizar(Endereco endereco) throws SQLException {
+
+        Connection conexao = Conexao.getInstance().getConnection();
+
+        String sql = """
+                    UPDATE Endereco SET CEP = ?, Logradouro = ?, Numero = ?, Complemento = ?, Bairro = ?, Cidade = ?, UF = ?, CodUsuario_Modificado = ?, DataHora_Modificado = ? WHERE CodEndereco = ?;
+                    """;
+
+        try (PreparedStatement preparedStatement = conexao.prepareStatement(sql)){
+            preparedStatement.setString(1,endereco.getCep());
+            preparedStatement.setString(2,endereco.getLogradouro());
+            preparedStatement.setString(3,endereco.getNumero());
+            preparedStatement.setString(4, endereco.getComplemento());
+            preparedStatement.setString(5, endereco.getBairro());
+            preparedStatement.setString(6, endereco.getCidade());
+            preparedStatement.setString(7, endereco.getUf());
+            preparedStatement.setInt(8, 0);
+            preparedStatement.setTimestamp(9, new java.sql.Timestamp(System.currentTimeMillis()));
+
+            preparedStatement.setInt(10, endereco.getCodEndereco());
+
+            preparedStatement.executeUpdate();
+
+
+        }
     }
 
     @Override

@@ -131,7 +131,32 @@ public class FamiliaDAO implements OperacoesBanco<Familia>{
 
     @Override
     public List<Familia> listarTodos() throws SQLException {
-        return new ArrayList<>();
+        List<Familia> listaFamilias = new ArrayList<>();
+        Connection conexao = Conexao.getInstance().getConnection();
+
+        String sql = """
+            SELECT f.CodFamilia, p.CodPessoa, p.Nome AS ResponsavelFamilia, p.CPF AS CpfResponsavel 
+            FROM Familia f
+            INNER JOIN Pessoa p ON f.CodONG = p.CodONG AND f.CodPessoaResponsavel = p.CodPessoa
+            """;
+
+        try (PreparedStatement preparedStatement = conexao.prepareStatement(sql)) {
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()) {
+                Familia familia = new Familia();
+
+                familia.setCodFamilia(resultSet.getInt("CodFamilia"));
+
+                familia.setCodPessoa(resultSet.getInt("CodPessoa"));
+                familia.setNome(resultSet.getString("ResponsavelFamilia"));
+                familia.setCpf(resultSet.getString("CpfResponsavel"));
+
+                listaFamilias.add(familia);
+            }
+        }
+
+        return listaFamilias;
     }
 
     public List<RelatorioFamiliaDTO> listarMembrosFamilia() throws SQLException {

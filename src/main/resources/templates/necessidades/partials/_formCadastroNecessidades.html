@@ -1,0 +1,44 @@
+<form th:fragment="formFragment" id="formNecessidade">
+
+    <input type="hidden" id="codNecessidade" name="codNecessidade" th:value="${payload?.codNecessidade ?: 0}">
+
+    <div class="mb-3">
+        <label for="codFamilia" class="form-label">Responsável da Familia</label>
+        <select class="form-select" id="codFamilia" name="codFamilia" required th:disabled="${payload != null}">
+            <option value="">Selecione a família...</option>
+            <option th:each="fam : ${familias}"
+                    th:value="${fam.codFamilia}"
+                    th:text="${fam.nome + ' (CPF: ' + fam.cpf + ')'}"
+                    th:selected="${payload?.codFamilia == fam.codFamilia}">
+            </option>
+        </select>
+    </div>
+
+    <div class="mb-3">
+        <label for="tipoNecessidade" class="form-label">Tipo de Necessidade</label>
+        <input type="text" class="form-control" id="tipoNecessidade" name="tipoNecessidade"
+               placeholder="Ex: Cesta básica, Roupas, Apoio psicológico"
+               th:value="${payload?.tipoNecessidade}" required>
+    </div>
+
+    <div class="mb-3">
+        <label for="descricao" class="form-label">Descrição</label>
+        <textarea class="form-control" id="descricao" name="descricao" rows="3"
+                  placeholder="Descreva os detalhes da necessidade..."
+                  th:text="${payload?.descricao}" required></textarea>
+    </div>
+
+    <div class="mb-3 mt-4">
+        <div class="form-check form-switch pt-1">
+            <input class="form-check-input" type="checkbox" id="atendida" name="atendida"
+                   th:checked="${payload?.atendida}">
+            <label class="form-check-label" for="atendida"> Necessidade já foi atendida/resolvida?</label>
+        </div>
+    </div>
+
+    <div class="d-grid mt-5">
+        <button type="button" onclick="SalvarNecessidade()" class="btn btn-secondary">
+            <i class="fa-solid fa-floppy-disk me-2"></i>Salvar Necessidade
+        </button>
+    </div>
+</form>
