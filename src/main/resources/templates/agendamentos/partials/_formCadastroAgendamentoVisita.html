@@ -1,0 +1,49 @@
+<form th:fragment="formFragment" id="formCadastroAgendamentoVisita">
+
+    <input type="hidden" id="codVisita" name="codVisita" th:value="${payload?.codVisita ?: 0}">
+
+    <div class="mb-3">
+        <label for="codFamilia" class="form-label">Responsável da Familia</label>
+        <select class="form-select" id="codFamilia" name="codFamilia" required th:disabled="${payload != null}">
+            <option value="">Selecione a família...</option>
+            <option th:each="fam : ${familias}"
+                    th:value="${fam.codFamilia}"
+                    th:text="${fam.nome + ' (CPF: ' + fam.cpf + ')'}"
+                    th:selected="${payload?.codFamilia == fam.codFamilia}">
+            </option>
+        </select>
+    </div>
+
+    <div class="mb-3">
+        <label for="codVoluntario" class="form-label">Voluntário</label>
+        <select class="form-select" id="codVoluntario" name="codVoluntario">
+            <option value="">Selecione o voluntário (Opcional)...</option>
+            <option th:each="vol : ${voluntarios}"
+                    th:value="${vol.codVoluntario}"
+                    th:text="${vol.nome}"
+                    th:selected="${payload?.codVoluntario == vol.codVoluntario}">
+            </option>
+        </select>
+    </div>
+
+    <div class="mb-3">
+        <label for="tipoVisita" class="form-label">Tipo Visita</label>
+        <textarea class="form-control" id="tipoVisita" name="tipoVisita" rows="3"
+                  placeholder="Descreva o tipo de visita..." th:text="${payload?.tipoVisita}"
+                  required></textarea>
+    </div>
+
+    <div class="mb-3 mt-4">
+        <div class="form-check form-switch pt-1">
+            <input class="form-check-input" type="checkbox" id="realizada" name="realizada"
+                   th:checked="${payload?.realizada}">
+            <label class="form-check-label" for="realizada"> Visita já foi realizada?</label>
+        </div>
+    </div>
+
+    <div class="d-grid mt-5">
+        <button type="button" onclick="SalvarAgendamentoVisita()" class="btn btn-secondary">
+            <i class="fa-solid fa-floppy-disk me-2"></i>Salvar Agendamento
+        </button>
+    </div>
+</form>

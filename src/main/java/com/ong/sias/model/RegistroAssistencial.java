@@ -23,5 +23,10 @@ public abstract class RegistroAssistencial {
     public Date getDataHora() { return dataHora; }
     public void setDataHora(Date dataHora) { this.dataHora = dataHora; }
 
+    private Familia familia;
+
+    public Familia getFamilia() { return familia; }
+    public void setFamilia(Familia familia) { this.familia = familia; }
+
     public abstract String obterResumo();
 }

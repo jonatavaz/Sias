@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{shared/layout :: layoutBase('Agendamentos de Visita - SIAS', ~{::main}, ${hxUrlFab}, ${iconeFab})}">
+<body>
+<main>
+    <div class="card shadow-sm border-0 p-3">
+        <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0">
+                <thead>
+                <tr>
+                    <th>Família (Responsável)</th>
+                    <th>Endereço</th>
+                    <th>Voluntário</th>
+                    <th>Tipo de Visita</th>
+                    <th>Status</th>
+                    <th>Resumo (POO)</th>
+                    <th class="text-end">Ações</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="agendamento : ${agendamentos}">
+                    <td th:text="${agendamento.familia.nome}"></td>
+
+                    <td class="text-truncate" style="max-width: 200px;"
+                        th:title="${agendamento.enderecoObj.logradouro}"
+                        th:text="${agendamento.enderecoObj.logradouro}"></td>
+
+                    <td th:text="${agendamento.voluntarioObj?.nome ?: 'Sem voluntário definido'}"></td>
+
+                    <td th:text="${agendamento.tipoVisita}"></td>
+
+                    <td>
+                        <span th:if="${agendamento.realizada}" class="badge bg-success">Realizada</span>
+                        <span th:unless="${agendamento.realizada}" class="badge bg-warning text-dark">Agendada</span>
+                    </td>
+
+                    <td th:text="${agendamento.obterResumo()}" class="text-muted fst-italic"></td>
+
+                    <td class="text-end">
+                        <button class="btn btn-sm btn-warning" title="Editar"
+                                th:attr="hx-get=@{/agendamentos/editar/{id}(id=${agendamento.codVisita})}"
+                                hx-target="#offcanvas-body-content"
+                                hx-swap="innerHTML"
+                                data-bs-toggle="offcanvas"
+                                data-bs-target="#offcanvasForm">
+                            <i class="fa-solid fa-pen"></i>
+                        </button>
+                        <button class="btn btn-sm btn-danger" title="Excluir"
+                                th:onclick="|DeletarAgendamentoVisita(${agendamento.codFamilia}, ${agendamento.voluntarioObj.codVoluntario}, ${agendamento.codVisita})|">
+                            <i class="fa-solid fa-trash"></i>
+                        </button>
+                    </td>
+                </tr>
+
+                <tr th:if="${#lists.isEmpty(agendamentos)}">
+                    <td colspan="7" class="text-center text-muted py-4">Nenhum agendamento de visita registrado ainda.</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <script th:src="@{/js/agendamentoVisita/index.js}"></script>
+</main>
+</body>
+</html>

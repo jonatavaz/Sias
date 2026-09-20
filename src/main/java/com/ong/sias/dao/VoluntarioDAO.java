@@ -1,9 +1,11 @@
 package com.ong.sias.dao;
 
+import com.ong.sias.model.Familia;
 import com.ong.sias.model.Voluntario;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -60,8 +62,30 @@ public class VoluntarioDAO implements OperacoesBanco<Voluntario>{
 
     @Override
     public List<Voluntario> listarTodos() throws SQLException {
+        List<Voluntario> listaVoluntarios = new ArrayList<>();
+        Connection conexao = Conexao.getInstance().getConnection();
 
+        String sql = """
+            SELECT v.CodPessoa, v.CodVoluntario, p.Nome, p.CPF FROM Voluntario v
+            INNER JOIN Pessoa p ON v.CodONG = p.CodONG AND v.CodPessoa = p.CodPessoa
+            """;
 
-        return new ArrayList<>();
+        try (PreparedStatement preparedStatement = conexao.prepareStatement(sql)) {
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()) {
+                Voluntario voluntario = new Voluntario();
+
+                voluntario.setCodPessoa(resultSet.getInt("CodPessoa"));
+
+                voluntario.setCodVoluntario(resultSet.getInt("CodVoluntario"));
+                voluntario.setNome(resultSet.getString("Nome"));
+                voluntario.setCpf(resultSet.getString("CPF"));
+
+                listaVoluntarios.add(voluntario);
+            }
+        }
+
+        return listaVoluntarios;
     }
 }

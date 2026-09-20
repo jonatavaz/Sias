@@ -12,6 +12,17 @@ public class AgendamentoVisita extends RegistroAssistencial {
     private String tipoVisita;
     private boolean realizada;
 
+    private Voluntario voluntarioObj;
+    private String enderecoConcatenado;
+
+    private Endereco enderecoObj;
+
+    public Voluntario getVoluntarioObj() { return voluntarioObj; }
+    public void setVoluntarioObj(Voluntario voluntarioObj) { this.voluntarioObj = voluntarioObj; }
+
+    public Endereco getEnderecoObj() { return enderecoObj; }
+    public void setEnderecoObj(Endereco enderecoObj) { this.enderecoObj = enderecoObj; }
+
     @Override
     public String obterResumo() {
         String status = this.realizada ? "Realizada" : "Agendada";
