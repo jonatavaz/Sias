@@ -2,9 +2,157 @@
 <html xmlns:th="http://www.thymeleaf.org"
       th:replace="~{shared/layout :: layoutBase('Início - SIAS', ~{::main}, null, null)}">
 <body>
-<main>
+<main class="container-fluid pt-4 mt-3">
     <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="h4 text-gray-800">Painel Geral</h2>
     </div>
+
+    <div class="row">
+
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-start border-primary border-4 shadow-sm h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Famílias Assistidas</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800" th:text="${totalFamilias ?: 0}">0</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fa-solid fa-people-roof fa-2x text-muted opacity-50"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-start border-warning border-4 shadow-sm h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">Necessidades Pendentes</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800" th:text="${necessidadesPendentes ?: 0}">0</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fa-solid fa-hand-holding-heart fa-2x text-muted opacity-50"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-start border-danger border-4 shadow-sm h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">Visitas Pendentes</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800" th:text="${visitasPendentes ?: 0}">0</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fa-solid fa-calendar-day fa-2x text-muted opacity-50"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-start border-success border-4 shadow-sm h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Visitas Realizadas</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800" th:text="${visitasRealizadas ?: 0}">0</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fa-solid fa-check-double fa-2x text-muted opacity-50"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <div class="row mt-4">
+        <div class="col-lg-6 mb-4">
+            <div class="card shadow-sm border-0 h-100">
+                <div class="card-header bg-white font-weight-bold text-secondary">
+                    <i class="fa-solid fa-chart-pie me-2"></i>Status das Necessidades
+                </div>
+                <div class="card-body d-flex justify-content-center">
+                    <div style="width: 80%; max-width: 400px;">
+                        <canvas id="graficoNecessidades"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-6 mb-4">
+            <div class="card shadow-sm border-0 h-100">
+                <div class="card-header bg-white font-weight-bold text-secondary">
+                    <i class="fa-solid fa-chart-doughnut me-2"></i>Status dos Agendamentos
+                </div>
+                <div class="card-body d-flex justify-content-center">
+                    <div style="width: 80%; max-width: 400px;">
+                        <canvas id="graficoVisitas"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script th:inline="javascript">
+        document.addEventListener("DOMContentLoaded", function() {
+            const necPendentes =  0;
+            const necAtendidas =  0;
+
+            const visPendentes =  0;
+            const visRealizadas =  0;
+
+            const canvasNec = document.getElementById('graficoNecessidades');
+            if (canvasNec) {
+                new Chart(canvasNec.getContext('2d'), {
+                    type: 'pie',
+                    data: {
+                        labels: ['Pendentes', 'Atendidas'],
+                        datasets: [{
+                            data: [necPendentes, necAtendidas],
+                            backgroundColor: ['#ffc107', '#198754'],
+                            hoverOffset: 4
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        plugins: {
+                            legend: { position: 'bottom' }
+                        }
+                    }
+                });
+            }
+
+            const canvasVis = document.getElementById('graficoVisitas');
+            if (canvasVis) {
+                new Chart(canvasVis.getContext('2d'), {
+                    type: 'doughnut',
+                    data: {
+                        labels: ['Agendadas (Pendentes)', 'Realizadas'],
+                        datasets: [{
+                            data: [visPendentes, visRealizadas],
+                            backgroundColor: ['#dc3545', '#198754'],
+                            hoverOffset: 4
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        plugins: {
+                            legend: { position: 'bottom' }
+                        }
+                    }
+                });
+            }
+        });
+    </script>
 </main>
 </body>
 </html>
