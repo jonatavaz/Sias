@@ -61,14 +61,14 @@ public class PessoaController {
 
             pessoaDAO.salvar(pessoa);
 
-            Usuario usuario = new Usuario();
-            usuario.setCodPessoa(pessoa.getCodPessoa());
-            usuario.setAtivo(true);
-
-            OperacoesBanco<Usuario> usuarioDAO = new UsuarioDAO();
-            usuarioDAO.salvar(usuario);
-
             if (payload.isPessoaVoluntario()){
+                Usuario usuario = new Usuario();
+                usuario.setCodPessoa(pessoa.getCodPessoa());
+                usuario.setAtivo(true);
+
+                OperacoesBanco<Usuario> usuarioDAO = new UsuarioDAO();
+                usuarioDAO.salvar(usuario);
+
                 Voluntario voluntario = new Voluntario();
                 voluntario.setCodPessoa(pessoa.getCodPessoa());
 

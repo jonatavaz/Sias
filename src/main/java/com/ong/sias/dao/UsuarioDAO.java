@@ -76,4 +76,38 @@ public class UsuarioDAO implements OperacoesBanco<Usuario>{
 
         return new ArrayList<>();
     }
+
+
+    public Usuario autenticar(String cpf, String senha) throws SQLException {
+        Usuario usuario = new Usuario();
+        Connection conexao = Conexao.getInstance().getConnection();
+
+        String sql = """
+            SELECT p.CodONG, u.CodUsuario, u.CodPessoa, p.Nome, u.Ativo 
+            FROM Usuario u
+            INNER JOIN Pessoa p ON u.CodONG = p.CodONG AND u.CodPessoa = p.CodPessoa
+            WHERE p.CPF = ? AND u.Senha = ? AND u.Ativo = 1
+            """;
+
+        try (PreparedStatement stmt = conexao.prepareStatement(sql)) {
+            stmt.setString(1, cpf);
+            stmt.setString(2, senha);
+
+            ResultSet rs = stmt.executeQuery();
+
+            if (rs.next()) {
+                usuario = new Usuario();
+                usuario.setCodUsuario(rs.getInt("CodUsuario"));
+                usuario.setCodPessoa(rs.getInt("CodPessoa"));
+                usuario.setAtivo(rs.getBoolean("Ativo"));
+                usuario.setNome(rs.getString("Nome"));
+
+                com.ong.sias.model.ONG ong = new com.ong.sias.model.ONG();
+                ong.setCodONG(rs.getInt("CodONG"));
+                usuario.setOng(ong);
+
+            }
+        }
+        return usuario;
+    }
 }

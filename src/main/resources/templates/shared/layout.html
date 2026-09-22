@@ -233,6 +233,10 @@
             border-bottom-color: #495057;
         }
 
+        .sidebar-sias .nav-link.text-danger:hover {
+            background-color: rgba(220, 53, 69, 0.15) !important;
+            color: #dc3545 !important;
+        }
 
     </style>
 </head>
@@ -240,8 +244,7 @@
 <body class="bg-dark text-white d-flex vh-100 overflow-hidden" id="corpo-pagina">
 
 <div class="d-flex flex-column flex-shrink-0 p-3 shadow-lg sidebar-sias" style="width: 280px;" id="sidebar">
-    <a href="/" class="d-flex justify-content-center mb-3 mb-md-0 text-decoration-none w-100 px-1 mt-1">
-        <i class="fa-solid fa-earth-americas fs-3 me-3 logo-icon"></i>
+    <a href="/home" class="d-flex justify-content-center mb-3 mb-md-0 text-decoration-none w-100 px-1 mt-1">
         <span class="fs-4 fw-bold logo-text">SIAS</span>
     </a>
     <hr class="text-white-50 my-4">
@@ -277,18 +280,14 @@
                 <span class="sidebar-text">Agendamentos</span>
             </a>
         </li>
-<!--        <li>-->
-<!--            <a href="/estoques" class="nav-link" title="Estoques">-->
-<!--                <i class="fa-solid fa-boxes-stacked me-3"></i>-->
-<!--                <span class="sidebar-text">Estoques</span>-->
-<!--            </a>-->
-<!--        </li>-->
-<!--        <li>-->
-<!--            <a href="/campanhas" class="nav-link" title="Campanhas">-->
-<!--                <i class="fa-solid fa-chart-bar me-3"></i>-->
-<!--                <span class="sidebar-text">Campanhas</span>-->
-<!--            </a>-->
-<!--        </li>-->
+    </ul>
+    <ul class="nav nav-pills flex-column gap-2 mb-3">
+        <li class="nav-item">
+            <a th:href="@{/logout}" class="nav-link text-danger" title="Sair do Sistema">
+                <i class="fa-solid fa-right-from-bracket me-3"></i>
+                <span class="sidebar-text fw-bold">Sair</span>
+            </a>
+        </li>
     </ul>
 
     <hr class="text-white-50">
@@ -296,7 +295,10 @@
     <div class="d-flex align-items-center justify-content-between user-container px-2 pb-2">
         <div class="d-flex align-items-center gap-3 text-white">
             <i class="fa-solid fa-circle-user fs-4 text-white-50"></i>
-            <span class="user-text fw-medium">Admin</span>
+            <span class="user-text fw-medium text-truncate d-inline-block"
+                  style="max-width: 140px;"
+                  th:title="${session.usuarioLogado?.nome}"
+                  th:text="${session.usuarioLogado?.nome ?: 'Administrador'}">Admin</span>
         </div>
         <label class="theme-switch user-text" title="Alternar Tema">
             <input type="checkbox" id="switch-tema" checked>

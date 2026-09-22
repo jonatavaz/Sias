@@ -10,7 +10,7 @@ public class HomeController {
 
     @GetMapping("/")
     public String raiz() {
-        return "redirect:/home";
+        return "redirect:/login";
     }
 
     @GetMapping("/home")

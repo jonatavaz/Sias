@@ -1,6 +1,5 @@
 package com.ong.sias.dao;
 
-import com.ong.sias.model.Familia;
 import com.ong.sias.model.Voluntario;
 
 import java.sql.Connection;
@@ -88,4 +87,6 @@ public class VoluntarioDAO implements OperacoesBanco<Voluntario>{
 
         return listaVoluntarios;
     }
+
+
 }
