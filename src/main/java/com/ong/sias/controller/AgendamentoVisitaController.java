@@ -82,7 +82,7 @@ public class AgendamentoVisitaController {
             visita.setDataHora(new java.util.Date());
 
             OperacoesBanco<AgendamentoVisita> dao = new AgendamentoVisitaDAO();
-            dao.atualizar(visita);
+            dao.salvar(visita);
 
             return ResponseEntity.ok("Agendamento registrado com sucesso!");
 

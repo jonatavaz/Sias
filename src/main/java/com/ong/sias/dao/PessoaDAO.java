@@ -159,7 +159,7 @@ public class PessoaDAO implements OperacoesBanco<Pessoa>{
             SELECT p.CodPessoa, p.Nome, p.CPF, p.Telefone, p.Email, p.DataNascimento, 
                    u.CodUsuario, u.Ativo 
             FROM Pessoa p
-            LEFT JOIN Usuario u ON p.CodUsuario = u.CodUsuario
+            LEFT JOIN Usuario u ON p.CodONG = u.CodONG AND p.CodPessoa = u.CodPessoa
             """;
 
         try(PreparedStatement preparedStatement = conexao.prepareStatement(sql)){

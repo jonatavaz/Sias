@@ -115,7 +115,7 @@ public class FamiliaController {
         } catch (SQLException ex) {
             ex.printStackTrace();
             model.addAttribute("mensagem", "Erro interno: Não foi possível carregar os dados desta família.");
-            return "<div class='alert alert-danger'>Erro interno ao buscar a família. Verifique o console da IDE.</div>";
+            return "<div class='alert alert-danger'>Erro interno ao buscar a família.</div>";
         }
     }
 
@@ -189,4 +189,6 @@ public class FamiliaController {
             return ResponseEntity.internalServerError().body("Erro interno: " + ex.getMessage());
         }
     }
+
+
 }
